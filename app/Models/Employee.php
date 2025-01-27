@@ -18,7 +18,7 @@ class Employee extends Model
         'monthly_salary'
     ];
 
-    protected $appends = ['hourly_rate', 'hourly_rate_charged'];
+    // protected $appends = ['hourly_rate', 'hourly_rate_charged'];
 
     public function getHourlyRateAttribute()
     {

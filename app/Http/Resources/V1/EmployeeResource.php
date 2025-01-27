@@ -19,9 +19,27 @@ class EmployeeResource extends JsonResource
             'type' => 'employee',
             'id' => $this->id,
             'attributes' => [
-                'first_name' => $this->firstname,
-                'last_name' => $this->lastname,
+                'first_name' => $this->first_name,
+                'last_name' => $this->last_name,
                 'status' => $this->employee_status,
+                'contract_hours' => $this->contract_hours,
+                'monthly_salary' => $this->monthly_salary,
+                'hourly_rate' => $this->hourly_rate,
+                'hourly_rate_charged' => $this->hourly_rate_charged
+            ],
+            'relationships' => [
+                'project' => [
+                    'data' => [
+                        'type' => 'project',
+                        'id' => 'todo'
+                    ],
+                    'links' => [
+                        ['self' => 'todo']
+                    ]
+                ]
+            ],
+            'links' => [
+                ['self' => route('employees.show', ['employee' => $this->id])]
             ]
         ];
     }

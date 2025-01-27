@@ -15,14 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(10)->create();
+        User::factory(4)->create();
 
-        // Employee::factory(10)->create();
+        Employee::factory(40)->create();
 
-        // Setting::factory()->create([
-        //     'key' => 'Taux Chargé',
-        //     'value' => '70'
-        // ]);
+        Setting::factory()->create([
+            'key' => 'Taux Chargé',
+            'value' => '70'
+        ]);
 
         // User::factory()->create([
         //     'name' => 'Test User',
