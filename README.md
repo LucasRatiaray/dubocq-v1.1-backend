@@ -1,66 +1,101 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Artisan Commands Cheat Sheet
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Model Creation Command
 
-## About Laravel
+Laravel provides a powerful Artisan command to generate models along with their associated files. The basic command structure is:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```bash
+php artisan make:model <ModelName> -m -f
+```
+### Command Flags Explanation
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- `-m` or `--migration`: Creates a migration file for the model
+- `-f` or `--factory`: Creates a factory file for the model
+  
+### Additional Flags
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- `-s` or `--seed`: Creates a seeder file for the model
+- `-c` or `--controller`: Creates a controller file for the model
+- `-r` or `--resource`: Creates a resource file for the model
+- `-a` or `--all`: Creates migration, factory, seeder, controller, and resource files
+- `--pivot`: Indicates that the model is a pivot table
 
-## Learning Laravel
+### Best Practices
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Use singular, PascalCase names for your models (e.g., `Product`, `UserProfile`)
+2. The migration will automatically create a plural, snake_case table name
+3. Always review and customize the migration file before running migrations
+4. Define proper factory states for different testing scenarios
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Additional Notes
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- The migration file will be created with a timestamp prefix
+- The factory file enables easy creation of test data
+- Remember to define fillable or guarded properties in your model
+- Add any relationships or custom methods to the model as needed
 
-## Laravel Sponsors
+### After Generation
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+After generating the files, you should:
 
-### Premium Partners
+1. Add columns to the migration file
+2. Define factory attributes
+3. Add any necessary model relationships
+4. Set model fillable/guarded properties
+5. Run `php artisan migrate` to create the database table
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## API Controller Creation Command
 
-## Contributing
+Laravel provides an Artisan command to generate API controllers with all necessary RESTful actions and form requests. The basic command structure is:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan make:controller Api/V1/<ModelName>Controller --resource --model=<ModelName> --requests
+```
 
-## Code of Conduct
+### Command Flags Explanation
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- `--resource`: Creates a RESTful resource controller with all standard methods
+- `--model`: Automatically injects the specified model into controller methods
+- `--requests`: Generates form request classes for validation
 
-## Security Vulnerabilities
+### Additional Flags
+- `--force`: Overwrite existing files
+- `--api`: Indicates that the controller is an API controller
+- `--invokable`: Creates an invokable controller
+- `--parent`: Specifies the parent class for the controller
+- `--no-interaction`: Skip user interaction during generation
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Generated Files
 
-## License
+This command will create:
+1. A controller in `app/Http/Controllers/Api/V1/`
+2. Form request classes in `app/Http/Requests/`
+    - `Store<ModelName>Request.php`
+    - `Update<ModelName>Request.php`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Controller Methods
+
+The generated controller includes these RESTful methods:
+- `index()`: List all resources
+- `store()`: Create a new resource
+- `show()`: Display a specific resource
+- `update()`: Update a specific resource
+- `destroy()`: Delete a specific resource
+
+### Best Practices
+
+1. Use versioning in your API routes (V1, V2, etc.)
+2. Utilize form requests for validation and authorization
+3. Follow RESTful naming conventions
+4. Keep controllers thin and move business logic to services
+5. Use resource collections for consistent API responses
+
+### After Generation
+
+After generating the controller, you should:
+
+1. Define validation rules in the form requests
+2. Implement authorization logic if needed
+3. Customize response formats
+4. Add any additional methods required
+5. Set up proper API routes in `routes/api.php`
