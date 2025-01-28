@@ -19,10 +19,9 @@ class DatabaseSeeder extends Seeder
 
         Employee::factory(40)->create();
 
-        Setting::factory()->create([
-            'key' => 'Taux Chargé',
-            'value' => '70'
-        ]);
+        $this->call(SettingSeeder::class);
+
+        $this->call(ZoneSeeder::class);
 
         // User::factory()->create([
         //     'name' => 'Test User',

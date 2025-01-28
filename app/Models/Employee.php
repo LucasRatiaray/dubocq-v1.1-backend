@@ -36,7 +36,7 @@ class Employee extends Model
             return null;
         }
 
-        $chargePercentage = (float) Setting::get('Taux Chargé', 70);
+        $chargePercentage = (float) Setting::get('rate_charged', 70);
 
         $factor = 1 + ($chargePercentage / 100);
 
