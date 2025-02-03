@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('key');
-            $table->json('value');
-            $table->date('start_date');
+            $table->decimal('value', 8, 2);
+            $table->date('start_date')->default(Carbon\Carbon::now());
             $table->date('end_date')->nullable();
             $table->timestamps();
         });

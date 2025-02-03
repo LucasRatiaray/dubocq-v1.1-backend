@@ -17,11 +17,22 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         return [
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
-            'employee_status' => fake()->randomElement(['salarié', 'etam']),
-            'contract_hours' => fake()->randomElement([35, 37, 40]),
-            'monthly_salary' => fake()->randomFloat(2, 0, 10000)
+            'type'   => 'WORKER',
+            'status' => 'ACTIVE',
         ];
+    }
+
+    public function workerType()
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'WORKER',
+        ]);
+    }
+
+    public function interimType()
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => 'INTERIM',
+        ]);
     }
 }

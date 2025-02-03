@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('zones', function (Blueprint $table) {
             $table->id();
-            $table->string('zone_name');
-            $table->decimal('min_km', 8, 2)->nullable();
-            $table->decimal('max_km', 8, 2)->nullable();
+            $table->string('name', 10);
+            $table->decimal('min_km', 6, 2)->nullable();
+            $table->decimal('max_km', 6, 2)->nullable();
             $table->decimal('rate', 8, 2);
             $table->timestamps();
         });

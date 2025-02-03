@@ -11,10 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->enum('type', ['WORKER', 'INTERIM']);
+            $table->string('code', 6)->unique();
+            $table->enum('type', ['MH', 'GO', 'OTHER']);
+            $table->string('name', 255);
+            $table->string('address', 255);
+            $table->string('city', 100);
+            $table->decimal('distance', 6, 2);
             $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
+            $table->foreignId('zone_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -24,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employees');
+        Schema::dropIfExists('projects');
     }
 };

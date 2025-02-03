@@ -15,8 +15,8 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
         $settings = [
-            ['key' => 'rate_charged', 'value' => json_encode(70), 'start_date' => Carbon::now(), 'end_date' => null],
-            ['key' => 'basket', 'value' => json_encode(11), 'start_date' => Carbon::now(), 'end_date' => null],
+            ['key' => 'rate_charged', 'value' => 70, 'start_date' => Carbon::now(), 'end_date' => null],
+            ['key' => 'basket', 'value' => 11, 'start_date' => Carbon::now(), 'end_date' => null],
         ];
 
         foreach ($settings as $setting) {
