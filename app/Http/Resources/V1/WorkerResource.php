@@ -22,21 +22,37 @@ class WorkerResource extends JsonResource
                 'last_name'           => $this->last_name,
                 'company'             => $this->company,
                 'contract_hours'      => $this->contract_hours,
-                'monthly_salary'      => $this->monthly_salary,
-                'hourly_rate'         => $this->hourly_rate,
-                'hourly_rate_charged' => $this->hourly_rate_charged,
+                'status'              => $this->employee->status,
+                $this->mergeWhen($request->routeIs('workers.show'), [
+                    'monthly_salary'      => $this->monthly_salary,
+                    'hourly_rate'         => $this->hourly_rate,
+                    'hourly_rate_charged' => $this->hourly_rate_charged,
+                ]),
+                $this->mergeWhen($request->routeIs('workers.*'), [
+                    'created_at'          => $this->when($request->routeIs('workers.*'), $this->created_at),
+                    'updated_at'          => $this->when($request->routeIs('workers.*'), $this->updated_at),
+                ]),
             ],
-            'relationships' => [
-                'projects' => [
-                    'data' =>
+            $this->mergeWhen($request->routeIs('workers.*'), [
+                'relationships' => [
+                    'projects' => [
+                        'data' =>
+                        $this->employee->projects->map(function ($project) {
+                            return [
+                                'type' => 'project',
+                                'id'   => $project->id,
+                            ];
+                        }),
+                    ]
+                ],
+            ]),
+            $this->when($request->routeIs('workers.*'), [
+                'includes' => [
                     $this->employee->projects->map(function ($project) {
-                        return [
-                            'type' => 'project',
-                            'id'   => $project->id,
-                        ];
+                        return new ProjectResource($project);
                     }),
-                ]
-            ],
+                ],
+            ]),
             'links' => [
                 ['self' => route('workers.show', ['worker' => $this->id])],
             ],

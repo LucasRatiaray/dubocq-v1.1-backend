@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
-use App\Http\Requests\StoreProjectRequest;
-use App\Http\Requests\UpdateProjectRequest;
+use App\Http\Requests\Api\V1\StoreProjectRequest;
+use App\Http\Requests\Api\V1\UpdateProjectRequest;
 use App\Http\Resources\V1\ProjectResource;
 
 class ProjectController extends Controller

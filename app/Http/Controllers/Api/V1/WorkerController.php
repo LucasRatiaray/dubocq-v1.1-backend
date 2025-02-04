@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Worker;
-use App\Http\Requests\StoreWorkerRequest;
-use App\Http\Requests\UpdateWorkerRequest;
+use App\Http\Requests\Api\V1\StoreWorkerRequest;
+use App\Http\Requests\Api\V1\UpdateWorkerRequest;
 use App\Http\Resources\V1\WorkerResource;
 
 class WorkerController extends Controller

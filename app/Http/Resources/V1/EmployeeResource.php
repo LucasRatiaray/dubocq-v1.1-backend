@@ -20,14 +20,17 @@ class EmployeeResource extends JsonResource
             'attributes' => [
                 'type'       => $this->type,
                 'status'     => $this->status,
-                'created_at' => $this->created_at,
-                'updated_at' => $this->updated_at,
+                $this->mergeWhen($request->routeIs('employees.*'), [
+                    'updated_at' => $this->when($request->routeIs('employees.*'), $this->updated_at),
+                    'created_at' => $this->when($request->routeIs('employees.*'), $this->created_at),
+                ]),
             ],
             'relationships' => [
                 'worker' => $this->when($this->type === 'WORKER', function () {
                     return [
                         'data' => [
-                            'type' => 'worker', 'id'   => $this->worker->id,
+                            'type' => 'worker',
+                            'id'   => $this->worker->id,
                         ],
                         'links' => [
                             ['self' => route('workers.show', ['worker' => $this->worker->id])]
@@ -37,13 +40,18 @@ class EmployeeResource extends JsonResource
                 'interim' => $this->when($this->type === 'INTERIM', function () {
                     return [
                         'data' => [
-                            'type' => 'interim', 'id'   => $this->interim->id,
+                            'type' => 'interim',
+                            'id'   => $this->interim->id,
                         ],
                         'links' => [
                             ['self' => route('interims.show', ['interim' => $this->interim->id])]
                         ]
                     ];
                 }),
+            ],
+            'includes' => [
+                $this->when($this->type === 'WORKER', new WorkerResource($this->worker)),
+                $this->when($this->type === 'INTERIM', new InterimResource($this->interim)),
             ],
             'links' => [
                 ['self' => route('employees.show', ['employee' => $this->id])]

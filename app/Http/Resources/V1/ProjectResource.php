@@ -19,25 +19,41 @@ class ProjectResource extends JsonResource
             'id'   => $this->id,
             'attributes' => [
                 'code'     => $this->code,
-                'type'     => $this->when($request->routeIs('projects.show'), $this->type),
                 'name'     => $this->name,
-                'address'  => $this->when($request->routeIs('projects.show'), $this->address),
                 'city'     => $this->city,
-                'distance' => $this->when($request->routeIs('projects.show'), $this->distance),
                 'status'   => $this->status,
                 'zone'     => $this->zone->name,
+                $this->mergeWhen($request->routeIs('projects.show'), [
+                    'type'     => $this->type,
+                    'address'  => $this->address,
+                    'distance' => $this->distance,
+                ]),
+                $this->mergeWhen($request->routeIs('projects.*'), [
+                    'created_at' => $this->when($request->routeIs('projects.*'), $this->created_at),
+                    'updated_at' => $this->when($request->routeIs('projects.*'), $this->updated_at),
+                ]),
             ],
-            'relationships' => [
-                'zone' => [
-                    'data' => [
-                        'type' => 'zone',
-                        'id'   => $this->zone->id,
-                    ],
-                    'links' => [
-                        ['self' => route('zones.show', ['zone' => $this->zone->id])],
+            $this->mergeWhen($request->routeIs('projects.*'), [
+                'relationships' => [
+                    'zone' => [
+                        'data' => [
+                            'type' => 'zone',
+                            'id'   => $this->zone->id,
+                        ],
+                        'links' => [
+                            ['self' => route('zones.show', ['zone' => $this->zone->id])],
+                        ],
                     ],
                 ],
-            ],
+            ]),
+            $this->mergeWhen(
+                $request->routeIs('projects.*'),
+                [
+                    'includes' => [
+                        new ZoneResource($this->zone),
+                    ]
+                ]
+            ),
             'links' => [
                 ['self' => route('projects.show', ['project' => $this->id])],
             ],

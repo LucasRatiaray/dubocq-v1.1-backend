@@ -20,18 +20,32 @@ class InterimResource extends JsonResource
             'attributes' => [
                 'company'     => $this->company,
                 'hourly_rate' => $this->hourly_rate,
+                'status'      => $this->employee->status,
+                $this->mergeWhen($request->routeIs('interims.*'), [
+                    'created_at' => $this->when($request->routeIs('interims.*'), $this->created_at),
+                    'updated_at' => $this->when($request->routeIs('interims.*'), $this->updated_at),
+                ]),
             ],
-            'relationships' => [
-                'projects' => [
-                    'data' =>
+            $this->mergeWhen($request->routeIs('interims.*'), [
+                'relationships' => [
+                    'projects' => [
+                        'data' =>
+                        $this->employee->projects->map(function ($project) {
+                            return [
+                                'type' => 'project',
+                                'id'   => $project->id,
+                            ];
+                        }),
+                    ]
+                ],
+            ]),
+            $this->mergeWhen($request->routeIs('interims.*'), [
+                'includes' => [
                     $this->employee->projects->map(function ($project) {
-                        return [
-                            'type' => 'project',
-                            'id'   => $project->id,
-                        ];
+                        return new ProjectResource($project);
                     }),
-                ]
-            ],
+                ],
+            ]),
             'links' => [
                 'self' => route('interims.show', ['interim' => $this->id]),
             ],
