@@ -25,10 +25,24 @@ class EmployeeResource extends JsonResource
             ],
             'relationships' => [
                 'worker' => $this->when($this->type === 'WORKER', function () {
-                    return new WorkerResource($this->worker);
+                    return [
+                        'data' => [
+                            'type' => 'worker', 'id'   => $this->worker->id,
+                        ],
+                        'links' => [
+                            ['self' => route('workers.show', ['worker' => $this->worker->id])]
+                        ]
+                    ];
                 }),
                 'interim' => $this->when($this->type === 'INTERIM', function () {
-                    return new InterimResource($this->interim);
+                    return [
+                        'data' => [
+                            'type' => 'interim', 'id'   => $this->interim->id,
+                        ],
+                        'links' => [
+                            ['self' => route('interims.show', ['interim' => $this->interim->id])]
+                        ]
+                    ];
                 }),
             ],
             'links' => [
@@ -37,19 +51,3 @@ class EmployeeResource extends JsonResource
         ];
     }
 }
-
-
-// 2) Rendre la ressource entière (optionnel)
-// Si tu as déjà des WorkerResource ou InterimResource séparés, tu peux conditionner leur utilisation :
-
-// php
-// Copier
-// Modifier
-// 'relationships' => [
-//     'worker' => $this->when($this->type === 'WORKER', function () {
-//         return new WorkerResource($this->worker);
-//     }),
-//     'interim' => $this->when($this->type === 'INTERIM', function () {
-//         return new InterimResource($this->interim);
-//     }),
-// ],

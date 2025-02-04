@@ -27,7 +27,15 @@ class WorkerResource extends JsonResource
                 'hourly_rate_charged' => $this->hourly_rate_charged,
             ],
             'relationships' => [
-                'projects' => ['todo'],
+                'projects' => [
+                    'data' =>
+                    $this->employee->projects->map(function ($project) {
+                        return [
+                            'type' => 'project',
+                            'id'   => $project->id,
+                        ];
+                    }),
+                ]
             ],
             'links' => [
                 ['self' => route('workers.show', ['worker' => $this->id])],

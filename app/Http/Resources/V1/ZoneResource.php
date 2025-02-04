@@ -5,7 +5,7 @@ namespace App\Http\Resources\V1;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class InterimResource extends JsonResource
+class ZoneResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,16 +15,18 @@ class InterimResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'type' => 'interim',
+            'type' => 'zone',
             'id'   => $this->id,
             'attributes' => [
-                'company'     => $this->company,
-                'hourly_rate' => $this->hourly_rate,
+                'name'   => $this->name,
+                'min_km' => $this->min_km,
+                'max_km' => $this->max_km,
+                'rate'   => $this->rate,
             ],
             'relationships' => [
                 'projects' => [
                     'data' =>
-                    $this->employee->projects->map(function ($project) {
+                    $this->projects->map(function ($project) {
                         return [
                             'type' => 'project',
                             'id'   => $project->id,
@@ -33,7 +35,7 @@ class InterimResource extends JsonResource
                 ]
             ],
             'links' => [
-                'self' => route('interims.show', ['interim' => $this->id]),
+                'self' => route('zones.show', ['zone' => $this->id]),
             ],
         ];
     }
