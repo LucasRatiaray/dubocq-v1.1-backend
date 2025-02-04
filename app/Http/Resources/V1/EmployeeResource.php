@@ -24,43 +24,12 @@ class EmployeeResource extends JsonResource
                 'updated_at' => $this->updated_at,
             ],
             'relationships' => [
-                'worker' => $this->when(
-                    $this->type === 'WORKER',
-                    function () {
-                        return [
-                            'data' => [
-                                'type' => 'worker',
-                                'id' => $this->worker?->id,
-                                'first_name' => $this->worker?->first_name,
-                                'last_name' => $this->worker?->last_name,
-                                'company' => $this->worker?->company,
-                                'contract_hours' => $this->worker?->contract_hours,
-                                'monthly_salary' => $this->worker?->monthly_salary,
-                                'hourly_rate' => $this->worker?->hourly_rate,
-                                'hourly_rate_charged' => $this->worker?->hourly_rate_charged,
-                            ],
-                            'links' => [
-                                ['self' => 'todo'],
-                            ],
-                        ];
-                    }
-                ),
-                'interim' => $this->when(
-                    $this->type === 'INTERIM',
-                    function () {
-                        return [
-                            'data' => [
-                                'type' => 'interim',
-                                'id' => $this->interim?->id,
-                                'company' => $this->interim?->company,
-                                'hourly_rate' => $this->interim?->hourly_rate,
-                            ],
-                            'links' => [
-                                ['self' => 'todo'],
-                            ],
-                        ];
-                    }
-                ),
+                'worker' => $this->when($this->type === 'WORKER', function () {
+                    return new WorkerResource($this->worker);
+                }),
+                'interim' => $this->when($this->type === 'INTERIM', function () {
+                    return new InterimResource($this->interim);
+                }),
             ],
             'links' => [
                 ['self' => route('employees.show', ['employee' => $this->id])]
