@@ -19,9 +19,9 @@ class InterimResource extends JsonResource
             'id'   => $this->id,
             'attributes' => [
                 'company'     => $this->company,
-                'hourly_rate' => $this->hourly_rate,
-                'status'      => $this->employee->status,
                 $this->mergeWhen($request->routeIs('interims.*'), [
+                    'hourly_rate' => $this->hourly_rate,
+                    'status'      => $this->employee->status,
                     'created_at' => $this->when($request->routeIs('interims.*'), $this->created_at),
                     'updated_at' => $this->when($request->routeIs('interims.*'), $this->updated_at),
                 ]),

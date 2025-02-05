@@ -20,15 +20,15 @@ class WorkerResource extends JsonResource
             'attributes' => [
                 'first_name'          => $this->first_name,
                 'last_name'           => $this->last_name,
-                'company'             => $this->company,
-                'contract_hours'      => $this->contract_hours,
-                'status'              => $this->employee->status,
                 $this->mergeWhen($request->routeIs('workers.show'), [
                     'monthly_salary'      => $this->monthly_salary,
                     'hourly_rate'         => $this->hourly_rate,
                     'hourly_rate_charged' => $this->hourly_rate_charged,
                 ]),
                 $this->mergeWhen($request->routeIs('workers.*'), [
+                    'company'             => $this->company,
+                    'contract_hours'      => $this->contract_hours,
+                    'status'              => $this->employee->status,
                     'created_at'          => $this->when($request->routeIs('workers.*'), $this->created_at),
                     'updated_at'          => $this->when($request->routeIs('workers.*'), $this->updated_at),
                 ]),
@@ -46,16 +46,16 @@ class WorkerResource extends JsonResource
                     ]
                 ],
             ]),
-            $this->when($request->routeIs('workers.*'), [
+            $this->mergeWhen($request->routeIs('workers.*'), [
                 'includes' => [
                     $this->employee->projects->map(function ($project) {
                         return new ProjectResource($project);
                     }),
                 ],
+                'links' => [
+                    ['self' => route('workers.show', ['worker' => $this->id])],
+                ],
             ]),
-            'links' => [
-                ['self' => route('workers.show', ['worker' => $this->id])],
-            ],
         ];
     }
 }
