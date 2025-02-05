@@ -22,7 +22,21 @@ class WorkerResource extends JsonResource
                 'last_name'  => $this->last_name,
                 $this->mergeWhen($request->routeIs('workers.show'), [
                     'monthly_salary'      => $this->monthly_salary,
+                    'hourly_rate'         => $this->hourly_rate,
+                    'hourly_rate_charged' => $this->hourly_rate_charged,
                 ]),
+                $this->mergeWhen($request->routeIs('workers.*'), [
+                    'category'             => $this->category,
+                    'contract_hours'      => $this->contract_hours,
+                    'status'              => $this->employee->status,
+                    'created_at'          => $this->when($request->routeIs('workers.*'), $this->created_at),
+                    'updated_at'          => $this->when($request->routeIs('workers.*'), $this->updated_at),
+                ]),
+            ],
+            'relationships' => [ 'project'],
+            'includes' => [ 'project'],
+            'links' => [
+                'self' => route('workers.show', ['worker' => $this->id]),
             ],
         ];
     }
