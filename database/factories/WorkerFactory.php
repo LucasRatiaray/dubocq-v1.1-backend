@@ -17,7 +17,11 @@ class WorkerFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'first_name'      => $this->faker->firstName,
+            'last_name'       => $this->faker->lastName,
+            'category'        => $this->faker->randomElement(['ouvrier', 'etam']),
+            'contract_hours'  => $this->faker->numberBetween(35,37,40),
+            'monthly_salary'  => $this->faker->randomFloat(2, 1000, 3500),
         ];
     }
 }

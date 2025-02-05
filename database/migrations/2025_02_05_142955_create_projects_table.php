@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
             $table->string('code', 6)->unique();
-            $table->enum('type', ['MH', 'GO', 'OTHER']);
+            $table->enum('type', ['mh', 'go', 'autre']);
             $table->string('name', 255);
             $table->string('address', 255);
             $table->string('city', 100);
             $table->decimal('distance', 6, 2);
-            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->foreignId('zone_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

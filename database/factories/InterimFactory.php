@@ -17,7 +17,8 @@ class InterimFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'agency'     => $this->faker->company,
+            'hourly_rate' => $this->faker->randomFloat(2, 12, 30),
         ];
     }
 }

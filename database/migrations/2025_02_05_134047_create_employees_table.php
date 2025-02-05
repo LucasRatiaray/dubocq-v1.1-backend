@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
+            $table->enum('status', ['active', 'inactive'])->default('active');
             $table->integer('employable_id');
             $table->string('employable_type');
             $table->timestamps();

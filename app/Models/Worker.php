@@ -12,7 +12,7 @@ class Worker extends Model
     /** @use HasFactory<\Database\Factories\WorkerFactory> */
     use HasFactory;
 
-    protected $fillable = ['first_name', 'last_name', 'status', 'contract_hours', 'monthly_salary'];
+    protected $fillable = ['first_name', 'last_name', 'category', 'contract_hours', 'monthly_salary'];
 
     /**
      * Get the employee record associated with the worker.
