@@ -335,3 +335,24 @@ After generating the resource, you should:
 6. Customize attribute names, links, or URLs in the resource
 7. Handle pagination data or conditional transformations
 8. Use the resource for API versioning or documentation
+
+
+
+
+Récupérer l'Employee d'un Worker
+$worker = Worker::find(1);
+$employee = $worker->employee; // Accède à l'Employee associé
+echo $employee->name;
+
+Récupérer l'Employee d'un Interim
+$interim = Interim::find(1);
+$employee = $interim->employee; // Accède à l'Employee associé
+echo $employee->name;
+
+Récupérer les projets d’un Worker
+$worker = Worker::find(1);
+$projects = $worker->projects; // Liste des projets du Worker
+
+Récupérer les projets d’un Interim
+$interim = Interim::find(1);
+$projects = $interim->projects; // Liste des projets de l'Interim
