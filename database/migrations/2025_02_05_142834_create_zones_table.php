@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('workers', function (Blueprint $table) {
+        Schema::create('zones', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name', 100);
-            $table->string('last_name', 100);
-            $table->enum('category', ['OUVRIER', 'ETAM']);
-            $table->integer('contract_hours');
-            $table->decimal('monthly_salary', 8, 2);
+            $table->string('name', 10);
+            $table->decimal('min_km', 6, 2)->nullable();
+            $table->decimal('max_km', 6, 2)->nullable();
+            $table->decimal('rate', 8, 2);
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('workers');
+        Schema::dropIfExists('zones');
     }
 };
