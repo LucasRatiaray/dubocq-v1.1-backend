@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::factory(4)->create();
+        $this->call(SettingSeeder::class);
 
          // 1️⃣ Générer les Zones
          $this->call(ZoneSeeder::class);
