@@ -43,6 +43,14 @@ class EmployeeResource extends JsonResource
                     ]
                 ]),
             ],
+            'includes' => [
+                $this->mergeWhen($this->employable_type === 'App\Models\Worker', [
+                    'worker' => new WorkerResource($this->employable),
+                ]),
+                $this->mergeWhen($this->employable_type === 'App\Models\Interim', [
+                    'interim' => new InterimResource($this->employable),
+                ]),
+            ],
             'links' => [
                 ['self' => route('employees.show', ['employee' => $this->id])]
             ],

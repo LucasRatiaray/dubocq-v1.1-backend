@@ -26,10 +26,12 @@ class InterimResource extends JsonResource
                     'updated_at' => $this->when($request->routeIs('interims.*'), $this->updated_at),
                 ]),
             ],
-            'relationships' => [
-                'employee' => 'project',
-            ],
-            'includes' => 'project',
+            $this->mergeWhen($request->routeIs('interims.*'), [
+                'relationships' => [
+                    'employee' => 'project',
+                ],
+                'includes' => 'project',
+            ]),
             'links' => [
                 'self' => route('interims.show', ['interim' => $this->id]),
             ],
