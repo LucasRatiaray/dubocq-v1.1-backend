@@ -37,6 +37,9 @@ class Worker extends Model
         )->where('employees.employable_type', Worker::class);
     }
 
+    /**
+     * Get the hourly rate attribute.
+     */
     public function getHourlyRateAttribute()
     {
         if ($this->contract_hours && $this->monthly_salary) {
@@ -46,6 +49,9 @@ class Worker extends Model
         return null;
     }
 
+    /**
+     * Get the hourly rate charged attribute.
+     */
     public function getHourlyRateChargedAttribute()
     {
         $hourlyRate = $this->hourly_rate;

@@ -31,6 +31,8 @@ class WorkerController extends Controller
      */
     public function show(Worker $worker)
     {
+        $worker->load('employee.projects');
+
         return new WorkerResource($worker);
     }
 

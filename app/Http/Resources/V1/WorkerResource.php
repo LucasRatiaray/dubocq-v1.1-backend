@@ -33,9 +33,25 @@ class WorkerResource extends JsonResource
                     'updated_at'          => $this->when($request->routeIs('workers.*'), $this->updated_at),
                 ]),
             ],
-            $this->mergeWhen($request->routeIs('workers.*'), [
-                'relationships' => ['project'],
-                'includes' => ['project'],
+            $this->mergeWhen($request->routeIs('workers.show'), [
+                'relationships' => [
+                    'projects' => $this->whenLoaded('employee', function () {
+                        if ($this->employee->relationLoaded('projects')) {
+                            return $this->employee->projects->map(function ($project) {
+                                return [
+                                    'data' => [
+                                        'type' => 'project',
+                                        'id'   => $project->id,
+                                    ],
+                                    'links' => [
+                                        'self' => route('projects.show', ['project' => $project->id]),
+                                    ],
+                                ];
+                            });
+                        }
+                    }),
+                ],
+                'includes' => 'projects',
             ]),
             'links' => [
                 'self' => route('workers.show', ['worker' => $this->id]),
