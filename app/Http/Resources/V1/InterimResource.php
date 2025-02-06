@@ -26,31 +26,22 @@ class InterimResource extends JsonResource
                     'updated_at'  => $this->when($request->routeIs('interims.*'), $this->updated_at),
                 ]),
             ],
-            $this->mergeWhen($request->routeIs('interims.show'), [
-                'relationships' => [
-                    'project' => $this->whenLoaded('employee', function () {
-                        if ($this->employee->relationLoaded('projects')) {
-                            return $this->employee->projects->map(function ($project) {
-                                return [
-                                    'data' => [
-                                        'type' => 'project',
-                                        'id'   => $project->id,
-                                    ],
-                                    'links' => [
-                                        'self' => route('projects.show', ['project' => $project->id]),
-                                    ],
-                                ];
-                            });
-                        }
-                    }),
-                ],
-                'includes' =>
-                $this->whenLoaded('employee', function () {
-                    if ($this->employee->relationLoaded('projects')) {
-                        return ProjectResource::collection($this->employee->projects);
-                    }
+            'relationships' => [
+                'project' => $this->employee->projects->map(function ($project) {
+                    return [
+                        'data' => [
+                            'type' => 'project',
+                            'id'   => $project->id,
+                        ],
+                        'links' => [
+                            'self' => route('projects.show', ['project' => $project->id]),
+                        ],
+                    ];
                 }),
-            ]),
+            ],
+            'includes' => $this->employee->projects->map(function ($project) {
+                return new ProjectResource($project);
+            }),
             'links' => [
                 'self' => route('interims.show', ['interim' => $this->id]),
             ]

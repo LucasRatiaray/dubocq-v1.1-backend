@@ -16,11 +16,11 @@ class EmployeeController extends ApiController
      */
     public function index()
     {
-        if ($this->include('worker')) {
+        if ($this->include('workers')) {
             return EmployeeResource::collection(Employee::where('employable_type', 'App\Models\Worker')->with('employable')->paginate());
         }
         
-        if ($this->include('interim')) {
+        if ($this->include('interims')) {
             return EmployeeResource::collection(Employee::where('employable_type', 'App\Models\Interim')->with('employable')->paginate());
         }
 

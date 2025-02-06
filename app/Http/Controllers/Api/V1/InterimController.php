@@ -31,8 +31,6 @@ class InterimController extends Controller
      */
     public function show(Interim $interim)
     {
-        $interim->load('employee.projects');
-
         return new InterimResource($interim);
     }
 
