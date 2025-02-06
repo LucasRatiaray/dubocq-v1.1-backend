@@ -26,7 +26,7 @@ class WorkerResource extends JsonResource
                     'hourly_rate_charged' => $this->hourly_rate_charged,
                 ]),
                 $this->mergeWhen($request->routeIs('workers.*'), [
-                    'category'             => $this->category,
+                    'category'            => $this->category,
                     'contract_hours'      => $this->contract_hours,
                     'status'              => $this->employee->status,
                     'created_at'          => $this->when($request->routeIs('workers.*'), $this->created_at),
