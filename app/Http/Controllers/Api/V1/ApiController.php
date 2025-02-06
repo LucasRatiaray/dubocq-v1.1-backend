@@ -17,6 +17,6 @@ class ApiController extends Controller
 
         $includeValues = explode(',', strtolower($param));
 
-        return in_array (strtolower($relationship), $includeValues);
+        return in_array(strtolower($relationship), $includeValues);
     }
 }

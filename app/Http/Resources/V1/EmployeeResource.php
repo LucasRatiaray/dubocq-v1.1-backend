@@ -20,10 +20,8 @@ class EmployeeResource extends JsonResource
             'attributes' => [
                 'status'     => $this->status,
                 'employable_type' => class_basename($this->employable_type),
-                $this->mergeWhen($request->routeIs('employees.*'), [
-                    'created_at' => $this->created_at,
-                    'updated_at' => $this->updated_at,
-                ])
+                'created_at' => $this->created_at,
+                'updated_at' => $this->updated_at,
             ],
             'relationships' => [
                 $this->mergeWhen($this->employable_type === 'App\Models\Worker', [
@@ -50,12 +48,8 @@ class EmployeeResource extends JsonResource
                 ]),
             ],
             'includes' => [
-                $this->mergeWhen($this->employable_type === 'App\Models\Worker', [
-                    new WorkerResource($this->employable),
-                ]),
-                $this->mergeWhen($this->employable_type === 'App\Models\Interim', [
-                    new InterimResource($this->employable),
-                ]),
+                $this->when(class_basename($this->employable_type) === 'Worker', new WorkerResource($this->whenLoaded('employable'))),
+                $this->when(class_basename($this->employable_type) === 'Interim', new InterimResource($this->whenLoaded('employable'))),
             ],
             'links' => [
                 ['self' => route('employees.show', ['employee' => $this->id])]

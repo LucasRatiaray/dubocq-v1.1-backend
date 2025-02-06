@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\Controller;
 use App\Models\Employee;
 use App\Http\Requests\Api\V1\StoreEmployeeRequest;
 use App\Http\Requests\Api\V1\UpdateEmployeeRequest;
 use App\Http\Resources\V1\EmployeeResource;
+use App\Http\Resources\V1\WorkerResource;
+use App\Http\Resources\V1\InterimResource;
 
 class EmployeeController extends ApiController
 {
@@ -15,6 +16,14 @@ class EmployeeController extends ApiController
      */
     public function index()
     {
+        if ($this->include('worker')) {
+            return EmployeeResource::collection(Employee::where('employable_type', 'App\Models\Worker')->with('employable')->paginate());
+        }
+        
+        if ($this->include('interim')) {
+            return EmployeeResource::collection(Employee::where('employable_type', 'App\Models\Interim')->with('employable')->paginate());
+        }
+
         return EmployeeResource::collection(Employee::paginate());
     }
 
