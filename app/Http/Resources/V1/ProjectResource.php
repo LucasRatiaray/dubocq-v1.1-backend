@@ -15,7 +15,7 @@ class ProjectResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'type' => 'projects',
+            'type' => 'project',
             'id' => $this->id,
             'attributes' => [
                 'code' => $this->code,
@@ -31,7 +31,10 @@ class ProjectResource extends JsonResource
                     'updated_at' => $this->updated_at,
                 ]),
             ],
-            'included' => [
+            'relationships' => [
+                'zone' => 'zone'
+            ],
+            'includes' => [
                 'zone' => 'zones',
             ],
             'links' => [
