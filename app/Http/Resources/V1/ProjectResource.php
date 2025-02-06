@@ -31,12 +31,29 @@ class ProjectResource extends JsonResource
                     'updated_at' => $this->updated_at,
                 ]),
             ],
-            'relationships' => [
-                'zone' => 'zone'
-            ],
-            'includes' => [
-                'zone' => 'zones',
-            ],
+            $this->mergeWhen($request->routeIs('projects.show'), [
+                'relationships' => [
+                    'employees' =>
+                    $this->employees->map(function ($employee) {
+                        return [
+                            'data' => [
+                                'type' => 'employee',
+                                'id'   => $employee->id,
+                            ],
+                            'links' => [
+                                'self' => route('employees.show', ['employee' => $employee->id]),
+                            ],
+                        ];
+                    }),
+                ],
+                'includes' => $this->employees->map(function ($employee) {
+                    if ($employee->employable_type === 'App\Models\Worker') {
+                        return new WorkerResource($employee->employable);
+                    } elseif ($employee->employable_type === 'App\Models\Interim') {
+                        return new InterimResource($employee->employable);
+                    }
+                }),
+            ]),
             'links' => [
                 'self' => route('projects.show', ['project' => $this->id]),
             ],

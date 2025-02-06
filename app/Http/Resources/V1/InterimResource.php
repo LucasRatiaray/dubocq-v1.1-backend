@@ -28,7 +28,7 @@ class InterimResource extends JsonResource
             ],
             $this->mergeWhen($request->routeIs('interims.show'), [
                 'relationships' => [
-                    'projects' => $this->whenLoaded('employee', function () {
+                    'project' => $this->whenLoaded('employee', function () {
                         if ($this->employee->relationLoaded('projects')) {
                             return $this->employee->projects->map(function ($project) {
                                 return [
@@ -44,11 +44,16 @@ class InterimResource extends JsonResource
                         }
                     }),
                 ],
-                'includes' => 'project',
+                'includes' =>
+                $this->whenLoaded('employee', function () {
+                    if ($this->employee->relationLoaded('projects')) {
+                        return ProjectResource::collection($this->employee->projects);
+                    }
+                }),
             ]),
             'links' => [
                 'self' => route('interims.show', ['interim' => $this->id]),
-            ],
+            ]
         ];
     }
 }

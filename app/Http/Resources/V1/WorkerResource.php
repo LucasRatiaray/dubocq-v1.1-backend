@@ -51,11 +51,18 @@ class WorkerResource extends JsonResource
                         }
                     }),
                 ],
-                'includes' => 'projects',
+                'includes' => [
+                    'projects' => $this->whenLoaded('employee', function () {
+                        if ($this->employee->relationLoaded('projects')) {
+                            return ProjectResource::collection($this->employee->projects);
+                        }
+                    }),
+                ]
             ]),
             'links' => [
                 'self' => route('workers.show', ['worker' => $this->id]),
             ],
+
         ];
     }
 }
