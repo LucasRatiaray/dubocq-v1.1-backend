@@ -7,15 +7,16 @@ use App\Models\Project;
 use App\Http\Requests\Api\V1\StoreProjectRequest;
 use App\Http\Requests\Api\V1\UpdateProjectRequest;
 use App\Http\Resources\V1\ProjectResource;
+use App\Http\Filters\V1\ProjectFilter;
 
 class ProjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(ProjectFilter $filters)
     {
-        return ProjectResource::collection(Project::paginate());
+        return ProjectResource::collection(Project::filter($filters)->paginate());
     }
 
     /**
