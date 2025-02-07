@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('workers', function (Blueprint $table) {
+        Schema::create('time_sheets', function (Blueprint $table) {
             $table->id();
+            $table->date('date');
+            $table->decimal('working_time', 4, 2);
+            $table->enum('time_sheet_type', ['day', 'night']);
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->string('first_name', 100);
-            $table->string('last_name', 100);
-            $table->enum('company', ['DUBOCQ', 'ETAM']);
-            $table->integer('contract_hours');
-            $table->decimal('monthly_salary', 8, 2);
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('workers');
+        Schema::dropIfExists('time_sheets');
     }
 };

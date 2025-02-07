@@ -10,17 +10,15 @@ class Worker extends Model
     /** @use HasFactory<\Database\Factories\WorkerFactory> */
     use HasFactory;
 
+    protected $table = 'workers';
+
     protected $fillable = [
-        'employee_id',
         'first_name',
         'last_name',
-        'company',
+        'category',
         'contract_hours',
-        'monthly_salary',
+        'monthly_salary'
     ];
 
-    public function employee(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Employee::class);
-    }
+    protected $casts = ['monthly_salary' => 'decimal:2'];
 }

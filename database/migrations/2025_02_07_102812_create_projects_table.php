@@ -13,15 +13,21 @@ return new class extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 6)->unique();
-            $table->enum('type', ['MH', 'GO', 'OTHER']);
+            $table->integer('code');
+            $table->enum('project_type', ['mh', 'go', 'other']);
             $table->string('name', 255);
             $table->string('address', 255);
-            $table->string('city', 100);
-            $table->decimal('distance', 6, 2);
-            $table->enum('status', ['ACTIVE', 'INACTIVE'])->default('ACTIVE');
+            $table->string('city', 255);
+            $table->decimal('distance', 10, 2);
+            $table->enum('status', ['active', 'inactive']);
             $table->foreignId('zone_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+        });
+
+        Schema::create('employee_project', function (Blueprint $table) {
+            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
+            $table->foreignId('project_id')->constrained()->onDelete('cascade');
+            $table->primary(['employee_id', 'project_id']);
         });
     }
 
@@ -30,6 +36,7 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('employee_project');
         Schema::dropIfExists('projects');
     }
 };

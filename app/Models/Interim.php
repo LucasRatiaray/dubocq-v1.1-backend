@@ -10,14 +10,9 @@ class Interim extends Model
     /** @use HasFactory<\Database\Factories\InterimFactory> */
     use HasFactory;
 
-    protected $fillable = [
-        'employee_id',
-        'company',
-        'hourly_rate',
-    ];
+    protected $table = 'interims';
 
-    public function employee(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Employee::class);
-    }
+    protected $fillable = ['agency', 'hourly_rate'];
+
+    protected $casts = ['hourly_rate' => 'decimal:2'];
 }
